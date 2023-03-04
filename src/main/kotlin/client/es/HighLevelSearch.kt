@@ -52,22 +52,24 @@ fun highLevelClient() {
 data class Store(
     val storeId: Int,
     val totalStock: Double,
+    val limitedProductsCount: Long,
     val limitedProductsTotalStock: Double
 )
 
 fun of(searchResponse: SearchResponse) {
     println(searchResponse.toString())
-    (searchResponse.aggregations.get("stores") as ParsedLongTerms).buckets.map {
-            storeBucket ->
+    (searchResponse.aggregations.get("stores") as ParsedLongTerms).buckets.map { storeBucket ->
         val productsStocksBucket = storeBucket.aggregations.get("products_stocks") as ParsedChildren
-            val totalStockBucket = productsStocksBucket.aggregations.get("total_stock") as ParsedSum
-            val limitedProductsBucket = productsStocksBucket.aggregations.get("limited_products") as ParsedFilter
-            val limitedProductsTotalStockBucket = limitedProductsBucket.aggregations.get("total_stock") as ParsedSum
-            val store = Store(
-                storeId = storeBucket.keyAsString.toInt(),
-                totalStock = totalStockBucket.value,
-                limitedProductsTotalStock = limitedProductsTotalStockBucket.value
-            )
-            println(store)
+        val totalStockBucket = productsStocksBucket.aggregations.get("total_stock") as ParsedSum
+        val limitedProductsBucket = productsStocksBucket.aggregations.get("limited_products") as ParsedFilter
+        val limitedProductsCount = productsStocksBucket.docCount
+        val limitedProductsTotalStockBucket = limitedProductsBucket.aggregations.get("total_stock") as ParsedSum
+        val store = Store(
+            storeId = storeBucket.keyAsString.toInt(),
+            totalStock = totalStockBucket.value,
+            limitedProductsCount = limitedProductsCount,
+            limitedProductsTotalStock = limitedProductsTotalStockBucket.value
+        )
+        println(store)
     }
 }
