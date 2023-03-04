@@ -22,6 +22,7 @@ fun highLevelClient() {
     searchSourceBuilder.size(0)
     val termsAggregationBuilder = AggregationBuilders.terms("stores")
         .field("store_id")
+        .size(Int.MAX_VALUE)
     val productsStocksAggregationBuilder = JoinAggregationBuilders.children("products_stocks", "goods")
     productsStocksAggregationBuilder.subAggregation(
         AggregationBuilders.sum("total_stock")
