@@ -1,0 +1,45 @@
+DELETE http://{{host}}:{{port}}/{{index}}/
+
+###
+GET http://{{host}}:{{port}}/{{index}}/_search_shards
+
+###
+GET http://{{host}}:{{port}}/{{index}}
+
+###
+PUT http://{{host}}:{{port}}/{{index}}
+Content-Type: application/json
+
+{
+  "mappings": {
+    "properties": {
+      "store_id": {
+        "type": "integer"
+      },
+      "store_name": {
+        "type": "keyword"
+      },
+      "location": {
+        "type": "geo_point"
+      },
+      "join_field": {
+        "type": "join",
+        "relations": {
+          "store": "goods"
+        }
+      },
+      "goods_name": {
+        "type": "keyword"
+      },
+      "limited": {
+        "type": "boolean"
+      },
+      "goods_id": {
+        "type": "integer"
+      },
+      "stock": {
+        "type": "integer"
+      }
+    }
+  }
+}

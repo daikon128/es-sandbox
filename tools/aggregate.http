@@ -1,0 +1,142 @@
+### group by store
+POST http://{{host}}:{{port}}/{{index}}/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "stores": {
+      "terms": {
+        "field": "store_id"
+      }
+    }
+  }
+}
+
+### count stocks
+POST http://{{host}}:{{port}}/{{index}}/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "stores": {
+      "terms": {
+        "field": "store_id"
+      },
+      "aggs": {
+        "all_stocks": {
+          "aggs": {
+            "stocks": {
+              "sum": {
+                "field": "stock"
+              }
+            }
+          },
+          "filter": {
+            "term": {
+              "bool": {
+                "has_parent": {
+                  "parent_type": "store"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+### search parent
+POST http://{{host}}:{{port}}/{{index}}/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "store",
+      "query": {
+        "match": {
+          "store_id": "2"
+        }
+      }
+    }
+  }
+}
+
+
+### limited doc count
+POST http://{{host}}:{{port}}/{{index}}/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "stores": {
+      "terms": {
+        "field": "store_id"
+      },
+      "aggs": {
+        "products": {
+          "children": {
+            "type": "goods"
+          },
+          "aggs": {
+            "limited_products": {
+              "filter": {
+                "term": {
+                  "limited": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+### limited items count
+POST http://{{host}}:{{port}}/{{index}}/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "stores": {
+      "terms": {
+        "field": "store_id",
+        "size": 10
+      },
+      "aggs": {
+        "products_stocks": {
+          "children": {
+            "type": "goods"
+          },
+          "aggs": {
+            "total_stock": {
+              "sum": {
+                "field": "stock"
+              }
+            },
+            "limited_products": {
+              "filter": {
+                "term": {
+                  "limited": true
+                }
+              },
+              "aggs": {
+                "total_stock": {
+                  "sum": {
+                    "field": "stock"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

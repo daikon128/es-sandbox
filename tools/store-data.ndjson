@@ -1,0 +1,14 @@
+{ "index": { "_index": "store", "_type": "_doc", "_id": "store_1" } }
+{ "store_id": 1, "store_name": "Store A", "location": { "lat": 35.681236, "lon": 139.767125 }, "join_field": "store" }
+{ "index": { "_index": "store", "_type": "_doc", "_id": "store_2" } }
+{ "store_id": 2, "store_name": "Store B", "location": { "lat": 35.670784, "lon": 139.706427 }, "join_field": "store"}
+{ "index": { "_index": "store", "_type": "_doc", "_id": "goods_1" } }
+{ "goods_id": 1, "goods_name": "Product A", "stock": 100, "limited": false, "join_field": { "name": "goods", "parent": "store_1" } }
+{ "index": { "_index": "store", "_type": "_doc", "_id": "goods_2", "routing": "store_1" } }
+{ "goods_id": 2, "goods_name": "Product B", "stock": 50, "limited": true, "join_field": { "name": "goods", "parent": "store_1" } }
+{ "index": { "_index": "store", "_type": "_doc", "_id": "goods_3", "routing": "store_2" } }
+{ "goods_id": 3, "goods_name": "Product C", "stock": 200, "limited": false, "join_field": { "name": "goods", "parent": "store_2" } }
+{ "index": { "_index": "store", "_type": "_doc", "_id": "goods_4", "routing": "store_2" } }
+{ "goods_id": 4, "goods_name": "Product D", "stock": 20, "limited": true, "join_field": { "name": "goods", "parent": "store_2" } }
+{ "index": { "_index": "store", "_type": "_doc", "_id": "goods_5", "routing": "store_2" } }
+{ "goods_id": 5, "goods_name": "Product E", "stock": 35, "limited": true, "join_field": { "name": "goods", "parent": "store_2" } }

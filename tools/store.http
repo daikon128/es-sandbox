@@ -1,0 +1,4 @@
+POST http://{{host}}:{{port}}/{{index}}/_bulk
+Content-Type: application/x-ndjson
+
+< store-data.ndjson
