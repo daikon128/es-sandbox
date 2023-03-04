@@ -106,8 +106,7 @@ Content-Type: application/json
   "aggs": {
     "stores": {
       "terms": {
-        "field": "store_id",
-        "size": 10
+        "field": "store_id"
       },
       "aggs": {
         "products_stocks": {
